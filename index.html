@@ -8,16 +8,26 @@
     </head>
     <body>
         <header class = "bg-primary text-center text-light p-3 h1">Weather Dashboard</header>
-        <div class="row p-4">
+        <div class="d-flex flex-row flex-wrap min-100-vh p-4">
             <!-- Form input on left side of the screen -->
-            <aside class="col col-3">
+            <aside class="col col-md-3 border-right border-dark border-5">
                 <h2>Search for a City: </h2>
+                <form id="search" class="border-bottom border-dark border-5">
+                    
+                    <input type="text" id="search-input" Placeholder="Enter a City here" class="form-input  w-100">
+                
+                    <button class="btn btn-block btn-primary my-3" type="button">Submit</button>
+                </form>
+                <div id="prevSearch">
+                    <!-- Previous seaches go here -->
+                </div>
+                
             </aside>
             
             <!-- Dashboard includes current data and 5 day forcast -->
             <main class="col">
                 <!-- Current Forecast -->
-                <div class="col border border-2 border-dark m">
+                <div class="col border border-2 border-dark">
                     <h3>Current Weather: </h3>
                     <!-- current weather data go here -->
 
@@ -25,7 +35,10 @@
                 <!-- 5-Day Forecast -->
                 <div class="col border border-3 border-dark">
                     <h3>5-Day Forecast: </h3>
-                    <!-- weather blocks go below -->
+                    
+                    <div class="d-flex flex-row">
+                        <!-- weather blocks go below -->
+                    </div>
                 </div>
             </main>
         </div>
