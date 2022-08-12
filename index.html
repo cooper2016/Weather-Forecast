@@ -10,13 +10,13 @@
         <header class = "bg-primary text-center text-light p-3 h1">Weather Dashboard</header>
         <div class="d-flex flex-row flex-wrap min-100-vh p-4">
             <!-- Form input on left side of the screen -->
-            <aside class="col col-md-3 border-right border-dark border-5">
+            <aside class="col col-md-4 ">
                 <h2>Search for a City: </h2>
-                <form id="search" class="border-bottom border-dark border-5">
-                    
-                    <input type="text" id="search-input" Placeholder="Enter a City here" class="form-input  w-100">
-                
-                    <button class="btn btn-block btn-primary my-3" type="button">Submit</button>
+                <form id="searchForm" class="border-bottom border-dark border-5">
+                    <!-- Location input -->
+                    <input type="text" id="searchInput" Placeholder="Enter a City here" class="form-input  w-100">
+                    <!-- Submit Button -->
+                    <button id = 'submitBtn' class="btn btn-block btn-primary my-3" type="submit">Submit</button>
                 </form>
                 <div id="prevSearch">
                     <!-- Previous seaches go here -->
@@ -27,21 +27,24 @@
             <!-- Dashboard includes current data and 5 day forcast -->
             <main class="col">
                 <!-- Current Forecast -->
-                <div class="col border border-2 border-dark">
+                <div class="col border border-2 border-dark d-none">
                     <h3>Current Weather: </h3>
                     <!-- current weather data go here -->
+                    <div id = "current">
 
+                    </div>
                 </div>
                 <!-- 5-Day Forecast -->
-                <div class="col border border-3 border-dark">
+                <div class="col border border-3 border-dark d-none">
                     <h3>5-Day Forecast: </h3>
                     
-                    <div class="d-flex flex-row">
+                    <div id="fiveDay" class="d-flex flex-row">
                         <!-- weather blocks go below -->
                     </div>
                 </div>
             </main>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="./assets/js/script.js"></script>
     </body>
 </html>
