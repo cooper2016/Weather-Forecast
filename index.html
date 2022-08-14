@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="./assets/css/style.css">
     </head>
     <body>
         <header class = "bg-primary text-center text-light p-3 h1">Weather Dashboard</header>
@@ -27,15 +28,26 @@
             <!-- Dashboard includes current data and 5 day forcast -->
             <main class="col">
                 <!-- Current Forecast -->
-                <div class="col border border-2 border-dark d-none">
+                <div class="col border border-2 border-dark ">
                     <h3>Current Weather: </h3>
                     <!-- current weather data go here -->
                     <div id = "current">
-
+                        <p>
+                            <span id="city"></span><span id="date"></span><img id="icon">
+                            <br>
+                            <span id = "temp"></span> 
+                            <br>
+                            <span id = "wind"></span>
+                            <br>
+                            <span id = "humid"></span>
+                            <br>
+                            <span id = "uv"></span>
+                            
+                        </p>
                     </div>
                 </div>
                 <!-- 5-Day Forecast -->
-                <div class="col border border-3 border-dark d-none">
+                <div class="col border border-3 border-dark ">
                     <h3>5-Day Forecast: </h3>
                     
                     <div id="fiveDay" class="d-flex flex-row">
@@ -44,6 +56,7 @@
                 </div>
             </main>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="./assets/js/script.js"></script>
     </body>

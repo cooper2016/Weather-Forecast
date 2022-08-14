@@ -2,7 +2,7 @@ var searchInputVal = document.querySelector('#searchInput');
 var prevSearchEl = document.querySelector('#prevSearch');
 var searchFormEl = $('#searchForm');
 var fiveDayEl = document.querySelector('#fiveDay');
-var currentEl = document.querySelector('#current');
+var currentEl = $('#current');
 
 var lat = 44.943611;
 var lon = -93.368294;
@@ -42,14 +42,34 @@ function searchAPI(lat,lon){
         .then(function(data){
             printCurrent(data);
 
-
         })
 }
 
 // print current weather data to applciation
 function printCurrent(resultObj){
     console.log(resultObj);
+    currentEl.parent().removeClass("d-none");
+    var curCity = $('#city');
+    var curDate = $('#date');
+    var curIcon = $('#icon');
+    var curTemp = $('#temp');
+    var curWind = $('#wind');
+    var curHumid = $('#humid');
+    var curUV = $('#uv');
+
+    // add city info 
+    curCity.text("Latitude = " + getLat() + " Longitude = " + getLon() + "  ");
+    // add date info
     
+    var today = moment().format('[(]M[/]DD[/]YYYY[)]');
+    curDate.text(today);
+
+    //current icon
+    var icon = resultObj.current.weather[0].icon;
+    curIcon.attr('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png');
+    console.log(curIcon);
+
+
     
 
 }
