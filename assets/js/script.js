@@ -49,25 +49,41 @@ function searchAPI(lat,lon){
 function printCurrent(resultObj){
     console.log(resultObj);
     currentEl.parent().removeClass("d-none");
-    var curCity = $('#city');
-    var curDate = $('#date');
-    var curIcon = $('#icon');
-    var curTemp = $('#temp');
-    var curWind = $('#wind');
-    var curHumid = $('#humid');
-    var curUV = $('#uv');
+    var curCityEl = $('#city');
+    var curDateEl = $('#date');
+    var curIconEl = $('#icon');
+    var curTempEl = $('#temp');
+    var curWindEl = $('#wind');
+    var curHumidEl = $('#humid');
+    var curUvEl = $('#uv');
 
     // add city info 
-    curCity.text("Latitude = " + getLat() + " Longitude = " + getLon() + "  ");
-    // add date info
+    curCityEl.text("Latitude = " + getLat() + " Longitude = " + getLon() + "  ");
     
+    // add date info
     var today = moment().format('[(]M[/]DD[/]YYYY[)]');
-    curDate.text(today);
+    curDateEl.text(today);
 
     //current icon
     var icon = resultObj.current.weather[0].icon;
-    curIcon.attr('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png');
-    console.log(curIcon);
+    curIconEl.attr('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png');
+
+    //current temp displayed
+    var curTemp = resultObj.current.temp;
+    curTemp = getFahrenheit(curTemp).toFixed();
+    curTempEl.text(curTemp + '°F' )
+
+    //render current wind with direction
+    var curWind = resultObj.current.wind_speed;
+    var windDir = windDirection(resultObj.current.wind_deg);
+    curWindEl.text(curWind + " mph from " + windDir);
+
+    //render current uv (our instructor told us skip this part talk with Stephen Oveson)
+
+    // var curUV = resultObj.current.uvi;
+    // curUvEl = text(curUV);
+    
+
 
 
     
@@ -78,10 +94,29 @@ function printCurrent(resultObj){
 // converting kelvins to Fahrenheit
 function getFahrenheit(kelvin){
     var fahr = (kelvin - 273.15) * (9/5) + 32;
-    console.log(fahr);
     return fahr;
 }
 
+//Find wind Direction(math is off but can fix later 45 degrees for every option)
+function windDirection(degrees){
+    if (degrees < 23 || degrees > 337){
+        return "N";
+    }else if (degrees > 22 && degrees < 67){
+        return "NE";
+    }else if (degrees > 66 && degrees < 111){
+        return "E"
+    }else if (degrees > 110 && degrees < 155){
+        return "SE"
+    }else if (degrees > 154 && degrees < 199){
+        return "S";
+    }else if (degrees > 198 && degrees < 243){
+        return "SW";
+    }else if (degrees > 242 && degrees < 288){
+        return "W";
+    }else{
+        return "NW";
+    }
+}
 
 
 // on submit look up weather data based on query information
