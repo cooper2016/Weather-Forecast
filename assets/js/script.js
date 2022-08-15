@@ -34,10 +34,12 @@ fetch(apiURL)
               return response.json();
         })
         .then(function(data){
-            console.log(data);
             
             lat = data.coord.lat;
             lon = data.coord.lon;
+
+            console.log(lat);
+            console.log(lon);
 
             searchAPI(lat,lon);
 
@@ -87,7 +89,6 @@ function searchAPI(lat,lon){
 
 // print current weather data to applciation
 function printCurrent(resultObj){
-    console.log(resultObj);
     currentEl.parent().removeClass("d-none");
     var curCityEl = $('#city');
     var curDateEl = $('#date');
