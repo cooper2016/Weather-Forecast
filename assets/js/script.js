@@ -22,10 +22,7 @@ function init(){
 
 //getting coordinates from input city
 
-function getCoordinates(){
-city = searchInputVal.value.trim();
-
-
+function getCoordinates(city){
 
 
 var apiURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",USA&APPID=deea8678f358f6e59a970dd133b9edc3";
@@ -212,7 +209,9 @@ function handleSearchSubmit(event){
         return;
     }
 
-    getCoordinates();
+    city = searchInputVal.value;
+
+    getCoordinates(city);
     saveCity();
     renderLocStor();
 
@@ -230,25 +229,33 @@ function saveCity() {
 //Render all searches in local storage
 
 function renderLocStor(){
-    prevSearchEl.innerHTML = "";
+    prevSearchEl.empty();
+    console.log(prevSearchEl);
     var prevSearch = JSON.parse(localStorage.getItem('searches'));
     if(prevSearch != null){
         
+        
+        
         for(var i = 0; i < prevSearch.length; i++){
+            
             var prevSearchBtn = document.createElement('button');
             prevSearchBtn.classList.add('my-2','btn','btn-secondary','btn-block');
             prevSearchBtn.textContent = prevSearch[i];
 
             prevSearchEl.append(prevSearchBtn);
-
+    
         }
     }
 }
 
+//will load the data of the previous search when clicked on
 function loadPrev(event){
+   event.preventDefault(); 
    var btnClicked = $(event.target);
-   searchInputVal.value = btnClicked.text();
-   getCoordinates();
+   var input = searchInputVal.value;
+   input = btnClicked.text();
+   city = input;
+   getCoordinates(input);
 }
 
 
