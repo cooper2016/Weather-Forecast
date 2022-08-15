@@ -1,12 +1,15 @@
 var searchInputVal = document.querySelector('#searchInput');
-var prevSearchEl = document.querySelector('#prevSearch');
+var prevSearchEl = $('#prevSearch');
 var searchFormEl = $('#searchForm');
 var fiveDayEl = document.querySelector('#fiveDay');
 var currentEl = $('#current');
+var mainEl = $('main');
 
 var lat;
 var lon;
 var city;
+
+var searches = [];
 
 // initialize
 function init(){
@@ -17,12 +20,14 @@ function init(){
 
 
 
+//getting coordinates from input city
 
 function getCoordinates(){
 city = searchInputVal.value.trim();
 
 
-//getting coordinates from city
+
+
 var apiURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",USA&APPID=deea8678f358f6e59a970dd133b9edc3";
 
 fetch(apiURL)
@@ -37,7 +42,6 @@ fetch(apiURL)
             
             lat = data.coord.lat;
             lon = data.coord.lon;
-
             console.log(lat);
             console.log(lon);
 
@@ -49,17 +53,6 @@ fetch(apiURL)
 }
 
 
-// Functions to get cordinates
-
-function getLat(){
-    return lat;
-}
-
-function getLon(){
-    return lon;
-}
-
-
 
 // gathering data form api
 function searchAPI(lat,lon){
@@ -67,8 +60,8 @@ function searchAPI(lat,lon){
     var APIurl = 'https://api.openweathermap.org/data/2.5/onecall?';
     var APIKey = 'deea8678f358f6e59a970dd133b9edc3';
     var locAPIKey = 'appid=' + APIKey;
-    var locLat = 'lat=' + getLat();
-    var locLon = 'lon=' + getLon();
+    var locLat = 'lat=' + lat;
+    var locLon = 'lon=' + lon;
 
     APIurl = APIurl + '&' + locLat + '&' + locLon + '&' + locAPIKey;
 
@@ -81,6 +74,7 @@ function searchAPI(lat,lon){
               return response.json();
         })
         .then(function(data){
+            mainEl.removeClass('d-none');
             printCurrent(data);
             printFiveDay(data);
 
@@ -207,9 +201,6 @@ function windDirection(degrees){
     }
 }
 
-function renderLocStor(){
-    return;
-}
 
 
 // on submit look up weather data based on query information
@@ -222,6 +213,45 @@ function handleSearchSubmit(event){
     }
 
     getCoordinates();
+    saveCity();
+    renderLocStor();
+
+
 }
 
+// save to local storage
+function saveCity() {
+    searches.push(city);
+
+    localStorage.setItem('searches', JSON.stringify(searches));
+    
+}
+
+//Render all searches in local storage
+
+function renderLocStor(){
+    prevSearchEl.innerHTML = "";
+    var prevSearch = JSON.parse(localStorage.getItem('searches'));
+    if(prevSearch != null){
+        
+        for(var i = 0; i < prevSearch.length; i++){
+            var prevSearchBtn = document.createElement('button');
+            prevSearchBtn.classList.add('my-2','btn','btn-secondary','btn-block');
+            prevSearchBtn.textContent = prevSearch[i];
+
+            prevSearchEl.append(prevSearchBtn);
+
+        }
+    }
+}
+
+function loadPrev(event){
+   var btnClicked = $(event.target);
+   searchInputVal.value = btnClicked.text();
+   getCoordinates();
+}
+
+
+init();
 searchFormEl.on('submit',handleSearchSubmit);
+prevSearchEl.on('click','button',loadPrev);
