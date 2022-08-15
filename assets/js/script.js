@@ -4,8 +4,47 @@ var searchFormEl = $('#searchForm');
 var fiveDayEl = document.querySelector('#fiveDay');
 var currentEl = $('#current');
 
-var lat = 44.943611;
-var lon = -93.368294;
+var lat;
+var lon;
+var city;
+
+// initialize
+function init(){
+    renderLocStor();
+
+}
+
+
+
+
+
+function getCoordinates(){
+city = searchInputVal.value.trim();
+
+
+//getting coordinates from city
+var apiURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",USA&APPID=deea8678f358f6e59a970dd133b9edc3";
+
+fetch(apiURL)
+        .then(function(response){
+            if (!response.ok) {
+                throw response.json();
+              }
+        
+              return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            
+            lat = data.coord.lat;
+            lon = data.coord.lon;
+
+            searchAPI(lat,lon);
+
+        })
+
+
+}
 
 
 // Functions to get cordinates
@@ -59,10 +98,10 @@ function printCurrent(resultObj){
     var curUvEl = $('#uv');
 
     // add city info 
-    curCityEl.text("Latitude = " + getLat() + " Longitude = " + getLon() + "  ");
+    curCityEl.text(city + " ");
     
     // add date info
-    var today = moment().format('[(]M[/]DD[/]YYYY[)]');
+    var today = moment().utcOffset((resultObj.timezone_offset/60)).format('[(]M[/]DD[/]YYYY[)]');
     curDateEl.text(today);
 
     //current icon
@@ -91,23 +130,26 @@ function printCurrent(resultObj){
 }
 
 function printFiveDay(resultObj){
-    console.log(resultObj);
 
-    for(var i = 1; i < 6; i++){
+    fiveDayEl.innerHTML = "";
+
+    for(var i = 0; i < 5; i++){
     // create the card
     var resultCard = document.createElement('div');
     resultCard.classList.add('card', 'bg-dark', 'text-light', 'm-2', 'p-2');
-    resultCard.setAttribute('style','width: 9rem;')
+    resultCard.setAttribute('style','width: 10rem;')
     
 
     //create header of card
-    var cardHeader = document.createElement('div');
-    cardHeader.classList.add('card-header');
-    cardHeader.textContent = "Date " + i;
+    var cardHeaderEl = document.createElement('div');
+    cardHeaderEl.classList.add('card-header');
+    cardDate = moment().utcOffset((resultObj.timezone_offset/60)).add(i,'days').format('[(]M[/]DD[/]YYYY[)]');
+    cardHeaderEl.textContent = cardDate;
   
+    //render weather icon
     var imgItemEl = document.createElement('img');
     imgItemEl.setAttribute('src','http://openweathermap.org/img/wn/' + resultObj.daily[i].weather[0].icon + '@2x.png')
-    console.log(imgItemEl);
+    
     
     // add unorder list element
     var listEl = document.createElement('ul');
@@ -115,14 +157,21 @@ function printFiveDay(resultObj){
     
     // Temp forecast
     var tempEl = document.createElement('li');
-    tempEl.textContent = getFahrenheit(resultObj.daily[i].temp.max).toFixed() + ' °F';
+    tempEl.textContent = 'Temp: ' + getFahrenheit(resultObj.daily[i].temp.max).toFixed() + ' °F';
 
+    // render wind
+    var windEl = document.createElement('li');
+    windEl.textContent = 'Wind: ' + resultObj.daily[i].wind_speed + ' mph';
+
+    // render humidity
+    var humidEl = document.createElement('li');
+    humidEl.textContent = 'Humidity: ' + resultObj.daily[i].humidity + '%';
 
     
 
 
-    listEl.append(imgItemEl,tempEl);
-    resultCard.append(cardHeader,listEl);
+    listEl.append(imgItemEl,tempEl,windEl,humidEl);
+    resultCard.append(cardHeaderEl,listEl);
     fiveDayEl.append(resultCard);
     
     
@@ -157,6 +206,10 @@ function windDirection(degrees){
     }
 }
 
+function renderLocStor(){
+    return;
+}
+
 
 // on submit look up weather data based on query information
 function handleSearchSubmit(event){
@@ -167,7 +220,7 @@ function handleSearchSubmit(event){
         return;
     }
 
-    searchAPI();
+    getCoordinates();
 }
 
 searchFormEl.on('submit',handleSearchSubmit);
