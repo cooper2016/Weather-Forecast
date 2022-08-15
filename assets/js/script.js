@@ -41,6 +41,7 @@ function searchAPI(lat,lon){
         })
         .then(function(data){
             printCurrent(data);
+            printFiveDay(data);
 
         })
 }
@@ -87,7 +88,45 @@ function printCurrent(resultObj){
 
     // var curUV = resultObj.current.uvi;
     // curUvEl = text(curUV);
+}
 
+function printFiveDay(resultObj){
+    console.log(resultObj);
+
+    for(var i = 1; i < 6; i++){
+    // create the card
+    var resultCard = document.createElement('div');
+    resultCard.classList.add('card', 'bg-dark', 'text-light', 'm-2', 'p-2');
+    resultCard.setAttribute('style','width: 9rem;')
+    
+
+    //create header of card
+    var cardHeader = document.createElement('div');
+    cardHeader.classList.add('card-header');
+    cardHeader.textContent = "Date " + i;
+  
+    var imgItemEl = document.createElement('img');
+    imgItemEl.setAttribute('src','http://openweathermap.org/img/wn/' + resultObj.daily[i].weather[0].icon + '@2x.png')
+    console.log(imgItemEl);
+    
+    // add unorder list element
+    var listEl = document.createElement('ul');
+    listEl.classList.add('list-group','list-group-flush');
+    
+    // Temp forecast
+    var tempEl = document.createElement('li');
+    tempEl.textContent = getFahrenheit(resultObj.daily[i].temp.max).toFixed() + ' °F';
+
+
+    
+
+
+    listEl.append(imgItemEl,tempEl);
+    resultCard.append(cardHeader,listEl);
+    fiveDayEl.append(resultCard);
+    
+    
+    }
 }
 
 
