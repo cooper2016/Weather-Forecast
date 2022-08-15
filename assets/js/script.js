@@ -71,22 +71,22 @@ function printCurrent(resultObj){
     //current temp displayed
     var curTemp = resultObj.current.temp;
     curTemp = getFahrenheit(curTemp).toFixed();
-    curTempEl.text(curTemp + '°F' )
+    curTempEl.text("Temp: " + curTemp + '°F' )
 
     //render current wind with direction
     var curWind = resultObj.current.wind_speed;
     var windDir = windDirection(resultObj.current.wind_deg);
-    curWindEl.text(curWind + " mph from " + windDir);
+    curWindEl.text("Wind: " + curWind + " mph from " + windDir);
 
+    // Render humidty
+
+    curHumidEl.text('Humidity: ' + resultObj.current.humidity + " %")
+    
+    
     //render current uv (our instructor told us skip this part talk with Stephen Oveson)
 
     // var curUV = resultObj.current.uvi;
     // curUvEl = text(curUV);
-    
-
-
-
-    
 
 }
 
